@@ -158,3 +158,11 @@ end
   * Remember to replace GitLab's public key with the one in this repo inside `/opt/gitlab/embedded/service/gitlab-rails/.license_encryption_key.pub` if you want the generated license to work in a GitLab production system. Keep in mind that the legallity of this action is questionable at best.
 3. Copy the output and paste it into GitLab, and you're done!
 
+
+## Usage (docker mode)
+
+1. Launch the `run.sh` script in your favorite shell
+2. Enter all the requested info.
+  * Remember to replace GitLab's public key located at `/opt/gitlab/embedded/service/gitlab-rails/.license_encryption_key.pub` with generated one if you want the license to work in a GitLab production system. Keep in mind that the legallity of this action is questionable at best.
+3. Copy the output and paste it into GitLab, and you're done!
+
