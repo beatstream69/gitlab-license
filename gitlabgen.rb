@@ -3,18 +3,21 @@ require 'gitlab/license'
 
 
 
+unless File.exist?('license_key')
 
+  # Generate a key pair. You should do this only once.
+  key_pair = OpenSSL::PKey::RSA.generate(2048)
 
-# Generate a key pair. You should do this only once.
-#key_pair = OpenSSL::PKey::RSA.generate(2048)
+  # Write it to a file to use in the license generation application.
+  File.open("license_key", "w") { |f| f.write(key_pair.to_pem) }
 
-# Write it to a file to use in the license generation application.
-#File.open("license_key", "w") { |f| f.write(key_pair.to_pem) }
+  # Extract the public key.
+  public_key = key_pair.public_key
 
-# Extract the public key.
-#public_key = key_pair.public_key
-# Write it to a file to ship along with the main application.
-#File.open("license_key.pub", "w") { |f| f.write(public_key.to_pem) }
+  # Write it to a file to ship along with the main application.
+  File.open("license_key.pub", "w") { |f| f.write(public_key.to_pem) }
+
+end
 
 # In the license generation application, load the private key from a file.
 private_key = OpenSSL::PKey::RSA.new File.read("license_key")
@@ -55,6 +58,10 @@ license.restrictions = {
   :plan => "ultimate", 
   :id   => rand(1000..99999999)
 }
+
+license.notify_admins_at = Date.new(2029, 11, 1)
+license.expires_at = Date.new(2030, 1, 1)
+license.block_changes_at = Date.new(2030, 2, 1)
 
 # Export the license, which encrypts and encodes it.
 data = license.export
